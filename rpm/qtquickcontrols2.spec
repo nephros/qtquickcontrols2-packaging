@@ -55,7 +55,7 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 export QTDIR=%{_opt_qt5_prefix}
 touch .git
 
-pushd examples/quickcontrols2/sio2style/
+pushd examples
 %{opt_qmake_qt5}
 
 # have to restart build several times due to bug in sb2
@@ -67,7 +67,7 @@ popd
 chmod -R ugo+r .
 
 %install
-pushd examples/quickcontrols2/sio2style/
+pushd examples
 make install INSTALL_ROOT=%{buildroot}
 popd
 
