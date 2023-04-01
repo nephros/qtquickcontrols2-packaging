@@ -55,21 +55,17 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 export QTDIR=%{_opt_qt5_prefix}
 touch .git
 
-pushd examples
-%{opt_qmake_qt5}
+%{opt_qmake_qt5} examples/examples.pro	
 
 # have to restart build several times due to bug in sb2
 %make_build  -k || chmod -R ugo+r . || true
 %make_build
-popd
 
 # bug in sb2 leading to 000 permission in some generated plugins.qmltypes files
 chmod -R ugo+r .
 
 %install
-pushd examples
 make install INSTALL_ROOT=%{buildroot}
-popd
 
 ## .prl/.la file love
 # nuke .prl reference(s) to %%buildroot, excessive (.la-like) libs
