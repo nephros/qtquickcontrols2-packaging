@@ -41,7 +41,7 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 
 %package examples
 Summary: Examples for %{name}
-Requires: %{name}%{?_isa} = %{version}
+Requires: %{name}%{?_isa}-devel = %{version}
 #Requires: %%{name}%%{?_isa} = %%{version}-%%{release}
 Requires: opt-qt5-qtbase-devel%{?_isa}
 Requires: opt-qt5-qtdeclarative-devel%{?_isa}
@@ -55,11 +55,14 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 export QTDIR=%{_opt_qt5_prefix}
 touch .git
 
+pushd examples/qtquickcontrols2/sio2style
+echo %{opt_qmake_qt5}
 %{opt_qmake_qt5}
+popd
 
 # have to restart build several times due to bug in sb2
 %make_build  -k || chmod -R ugo+r . || true
-%make_build examples
+%make_build
 
 # bug in sb2 leading to 000 permission in some generated plugins.qmltypes files
 chmod -R ugo+r .
