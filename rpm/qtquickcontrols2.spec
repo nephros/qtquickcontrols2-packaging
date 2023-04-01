@@ -55,11 +55,11 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 export QTDIR=%{_opt_qt5_prefix}
 touch .git
 
-%{opt_qmake_qt5} examples/examples.pro	
+%{opt_qmake_qt5}
 
 # have to restart build several times due to bug in sb2
 %make_build  -k || chmod -R ugo+r . || true
-%make_build
+%make_build examples
 
 # bug in sb2 leading to 000 permission in some generated plugins.qmltypes files
 chmod -R ugo+r .
@@ -108,7 +108,5 @@ rm -f %{buildroot}%{_opt_qt5_libdir}/libQt5*.la
 %files examples
 %{_opt_qt5_libdir}/*
 %{_opt_qt5_archdatadir}/qml/*
+%{_opt_qt5_examplesdir}/qml/*
 #%%{_opt_qt5_archdatadir}/qml/QtQuick/Templates.2/
-
-%files devel
-#%%{_opt_qt5_headerdir}/
