@@ -56,12 +56,9 @@ export QTDIR=%{_opt_qt5_prefix}
 touch .git
 
 pushd examples/quickcontrols2/sio2style/
-%make_build
 %{opt_qmake_qt5}
-popd
 
 # have to restart build several times due to bug in sb2
-pushd examples/quickcontrols2/sio2style/
 %make_build  -k || chmod -R ugo+r . || true
 %make_build
 popd
