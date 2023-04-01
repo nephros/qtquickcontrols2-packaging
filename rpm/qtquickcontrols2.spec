@@ -39,6 +39,15 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 %description devel
 %{summary}.
 
+%package examples
+Summary: Examples for %{name}
+Requires: %{name}%{?_isa} = %{version}
+#Requires: %%{name}%%{?_isa} = %%{version}-%%{release}
+Requires: opt-qt5-qtbase-devel%{?_isa}
+Requires: opt-qt5-qtdeclarative-devel%{?_isa}
+%description examples
+%{summary}.
+
 %prep
 %autosetup -n %{name}-%{version}/upstream
 
@@ -50,13 +59,17 @@ touch .git
 
 # have to restart build several times due to bug in sb2
 %make_build  -k || chmod -R ugo+r . || true
+pushd examples/quickcontrols2/sio2style/
 %make_build
+popd
 
 # bug in sb2 leading to 000 permission in some generated plugins.qmltypes files
 chmod -R ugo+r .
 
 %install
+pushd examples/quickcontrols2/sio2style/
 make install INSTALL_ROOT=%{buildroot}
+popd
 
 ## .prl/.la file love
 # nuke .prl reference(s) to %%buildroot, excessive (.la-like) libs
@@ -78,20 +91,28 @@ rm -f %{buildroot}%{_opt_qt5_libdir}/libQt5*.la
 
 %files
 %license LICENSE.LGPLv3 LICENSE.GPLv3
-%{_opt_qt5_libdir}/libQt5QuickTemplates2.so.5*
-%{_opt_qt5_libdir}/libQt5QuickControls2.so.5*
-%{_opt_qt5_qmldir}/Qt/labs/calendar
-%{_opt_qt5_qmldir}/Qt/labs/platform
-%{_opt_qt5_archdatadir}/qml/QtQuick/Controls.2/
-%{_opt_qt5_archdatadir}/qml/QtQuick/Templates.2/
+#%%{_opt_qt5_libdir}/libQt5QuickTemplates2.so.5*
+#%%{_opt_qt5_libdir}/libQt5QuickControls2.so.5*
+#%%{_opt_qt5_qmldir}/Qt/labs/calendar
+#%%{_opt_qt5_qmldir}/Qt/labs/platform
+#%%{_opt_qt5_archdatadir}/qml/QtQuick/Controls.2/
+#%%{_opt_qt5_archdatadir}/qml/QtQuick/Templates.2/
 
 %files devel
-%{_opt_qt5_headerdir}/
-%{_opt_qt5_libdir}/pkgconfig/*.pc
-%{_opt_qt5_libdir}/libQt5QuickTemplates2.so
-%{_opt_qt5_libdir}/libQt5QuickControls2.so
-%{_opt_qt5_libdir}/libQt5QuickTemplates2.prl
-%{_opt_qt5_libdir}/libQt5QuickControls2.prl
-%{_opt_qt5_libdir}/qt5/mkspecs/modules/*
-%{_opt_qt5_libdir}/cmake/Qt5QuickControls2/
-%{_opt_qt5_libdir}/cmake/Qt5QuickTemplates2/
+#%%{_opt_qt5_headerdir}/
+#%%{_opt_qt5_libdir}/pkgconfig/*.pc
+#%%{_opt_qt5_libdir}/libQt5QuickTemplates2.so
+#%%{_opt_qt5_libdir}/libQt5QuickControls2.so
+#%%{_opt_qt5_libdir}/libQt5QuickTemplates2.prl
+#%%{_opt_qt5_libdir}/libQt5QuickControls2.prl
+#%%{_opt_qt5_libdir}/qt5/mkspecs/modules/*
+#%%{_opt_qt5_libdir}/cmake/Qt5QuickControls2/
+#%%{_opt_qt5_libdir}/cmake/Qt5QuickTemplates2/
+
+%files examples
+%{_opt_qt5_libdir}/*
+%{_opt_qt5_archdatadir}/qml/*
+#%%{_opt_qt5_archdatadir}/qml/QtQuick/Templates.2/
+
+%files devel
+#%%{_opt_qt5_headerdir}/
