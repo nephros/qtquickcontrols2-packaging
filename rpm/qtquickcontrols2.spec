@@ -55,7 +55,7 @@ Requires: opt-qt5-qtdeclarative-devel%{?_isa}
 export QTDIR=%{_opt_qt5_prefix}
 touch .git
 
-pushd examples/qtquickcontrols2/sio2style
+pushd examples/quickcontrols2/sio2style/
 echo %{opt_qmake_qt5}
 %{opt_qmake_qt5}
 popd
